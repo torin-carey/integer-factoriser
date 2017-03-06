@@ -5,7 +5,7 @@
 
 #include "factoriser.h"
 
-static unint delete_entries(unint *buf, unint size, unint n) {
+static unint delete_entries(char *buf, unint size, unint n) {
 	unint deleted = 0;
 	for (unint k = 2*n; k < size + 2; k += n) {
 		if (buf[k - 2]) {
@@ -18,7 +18,7 @@ static unint delete_entries(unint *buf, unint size, unint n) {
 
 // buf[k] <=> k + 2;
 
-unint sieve(unint *buf, unint size) {
+unint sieve(char *buf, unint size) {
 	unint primes = size;
 	unint i;
 	for (i = 0; i < size; i++)
@@ -32,7 +32,7 @@ unint sieve(unint *buf, unint size) {
 }
 
 void produce_prime_table(primetable_t *table, unint max) {
-	unint *tmp = calloc(max - 1, sizeof(unint));
+	char *tmp = malloc(max - 1);
 	if (!tmp) {
 		fputs("ERROR: Could not allocate sieve\n", stderr);
 		exit(-1);
