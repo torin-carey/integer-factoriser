@@ -5,11 +5,12 @@
 
 #define MAX(a, b) (a) > (b) ? (a) : (b)
 
-#define output(str) fputs(str, stdout)
 
 int main(int argc, char **argv) {
-	if (argc == 1)
+	if (argc == 1) {
+		puts("Usage: factorise [integer] ...");
 		return -1;
+	}
 	
 	unint inputs[argc - 1];
 	unint ninputs = argc - 1;
@@ -35,7 +36,7 @@ int main(int argc, char **argv) {
 		for (unint j = 0; j < factors.found; j++) {
 			factorterm_t term = factors.terms[j];
 			if (j)
-				output(" * ");
+				fputs(" * ", stdout);
 
 			printf("%u", term.base);
 			if (term.exponent != 1)
