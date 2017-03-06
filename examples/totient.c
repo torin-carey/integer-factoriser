@@ -5,10 +5,9 @@
 
 #define MAX(a, b) (a) > (b) ? (a) : (b)
 
-
 int main(int argc, char **argv) {
 	if (argc == 1) {
-		puts("Usage: factorise [integer] ...");
+		puts("Usage: totient [integer] ...");
 		return -1;
 	}
 	
@@ -22,28 +21,14 @@ int main(int argc, char **argv) {
 	}
 
 	puts("Producing prime table...");
-	primetable_t table;
-	produce_prime_table(&table, largest);
+	produce_prime_table(largest);
 	puts("done\n");
 	
-	factors_t factors;
-	init_factors(&factors, 256); // Probably wont need to go over this
-
 	for (unint k = 0; k < ninputs; k++) {
 		unint n = inputs[k];
-		factorise(&factors, &table, n);
-		printf("%u = ", n);
-		for (unint j = 0; j < factors.found; j++) {
-			factorterm_t term = factors.terms[j];
-			if (j)
-				fputs(" * ", stdout);
-
-			printf("%u", term.base);
-			if (term.exponent != 1)
-				printf("^%u", term.exponent);
-			
-		}
-		putchar('\n');
+		unint tot = totient(n);
+		printf("phi( %u ) = %u\n", n, tot);
 	}
-
+	
+	free_prime_table();
 }

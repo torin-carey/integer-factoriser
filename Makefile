@@ -1,17 +1,27 @@
 CC=gcc
-CFLAGS=-g -lm
+CFLAGS=-g -lm -I$(SRC)
 
 SRC=./src
 BIN=./bin
+EXAMPLE=./examples
 
+LIBOUT=libintegerfactoriser.a
 DEP=factoriser.h
-OBJ=factoriser.o sieve.o main.o
+OBJ=factoriser.o sieve.o algorithms.o
+EXAMPLES=factorise totient
+BINOBJ=$(addprefix $(BIN)/, $(OBJ))
 
-.PHONY: all clean
+.PHONY: all clean reset
 
-all: $(BIN) factorise
+all: $(LIBOUT) $(EXAMPLES)
 
-factorise:  $(addprefix $(BIN)/, $(OBJ))
+$(LIBOUT): $(BIN) $(BINOBJ)
+	ar rvsc $@ $(BINOBJ)
+
+factorise: $(EXAMPLE)/factorise.c $(LIBOUT)
+	gcc -o $@ $^ $(CFLAGS)
+
+totient: $(EXAMPLE)/totient.c $(LIBOUT)
 	gcc -o $@ $^ $(CFLAGS)
 
 $(BIN)/%.o: $(SRC)/%.c $(SRC)/$(DEP)
@@ -22,3 +32,6 @@ $(BIN):
 
 clean:
 	rm -rf $(BIN)
+
+reset: clean
+	rm -f $(LIBOUT) $(EXAMPLES)

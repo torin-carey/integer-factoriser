@@ -5,7 +5,7 @@
 
 #include "factoriser.h"
 
-void factorise(factors_t *factors, primetable_t *primes, unint n) {
+void factorise_t(factors_t *factors, primetable_t *primes, unint n) {
 //	assert(primes->buf[primes->size - 1] >= n);
 	
 	unint lprime = 0;
@@ -31,6 +31,10 @@ void factorise(factors_t *factors, primetable_t *primes, unint n) {
 	}
 }
 
+void factorise(factors_t *factors, unint n) {
+	factorise_t(factors, &global_primetable, n);
+}
+
 void init_factors(factors_t *factors, unint max) {
 	factors->nmemb = max;
 	factors->found = 0;
@@ -45,4 +49,9 @@ void resize_factors(factors_t *factors, unint max) {
 	}
 	factors->nmemb = max;
 	factors->terms = ptr;
+}
+
+void free_factors(factors_t *factors) {
+	free(factors->terms);
+	factors->terms = NULL;
 }

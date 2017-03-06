@@ -31,7 +31,7 @@ unint sieve(char *buf, unint size) {
 	return primes;
 }
 
-void produce_prime_table(primetable_t *table, unint max) {
+void produce_prime_table_t(primetable_t *table, unint max) {
 	char *tmp = malloc(max - 1);
 	if (!tmp) {
 		fputs("ERROR: Could not allocate sieve\n", stderr);
@@ -50,4 +50,18 @@ void produce_prime_table(primetable_t *table, unint max) {
 	free(tmp);
 	table->buf = tab;
 	table->size = tmpnum;
+}
+
+void produce_prime_table(unint max) {
+	produce_prime_table_t(&global_primetable, max);
+}
+
+void free_prime_table_t(primetable_t *table) {
+	free(table->buf);
+	table->buf = NULL;
+}
+
+void free_prime_table(void) {
+	free(global_primetable.buf);
+	global_primetable.buf = NULL;
 }
